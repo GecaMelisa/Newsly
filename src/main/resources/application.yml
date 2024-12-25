@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/newsly_app?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+jwt:
+  secret: your_very_secure_and_long_secret_key_here
+  expiration: 86400000 # 1 day in milliseconds
+
+openai:
+  secret: "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"
