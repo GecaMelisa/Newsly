@@ -54,16 +54,17 @@ public class NewsController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(newsList);
     }
-
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NewsDTO> createNews(@RequestBody NewsDTO newsDTO) {
+    public ResponseEntity<Object> createNews(@RequestBody NewsDTO newsDTO) {
         try {
             News createdNews = newsService.createNews(newsDTO);
-            return new ResponseEntity<>(NewsDTO.fromNews(createdNews), HttpStatus.CREATED);
+            return ResponseEntity.ok(NewsDTO.fromNews(createdNews));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
 
 
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

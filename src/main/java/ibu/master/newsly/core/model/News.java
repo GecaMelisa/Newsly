@@ -2,6 +2,7 @@ package ibu.master.newsly.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "news")public class News {
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
     private Long id;
     private String title;
     private String content;
-    private LocalDateTime date = LocalDateTime.now();
+    private Date date;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
@@ -53,11 +54,12 @@ import java.time.LocalDateTime;
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
+
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

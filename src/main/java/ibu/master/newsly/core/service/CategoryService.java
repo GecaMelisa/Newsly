@@ -1,5 +1,6 @@
 package ibu.master.newsly.core.service;
 
+import ibu.master.newsly.core.api.generateCategory.CategoryGenerator;
 import ibu.master.newsly.core.model.Category;
 import ibu.master.newsly.core.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,17 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryGenerator categoryGenerator;
+
 
     // Constructor injection
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryGenerator categoryGenerator) {
         this.categoryRepository = categoryRepository;
+        this.categoryGenerator = categoryGenerator;
     }
-
+    public String generateCategory (String content) {
+        return categoryGenerator.generateCategory(content);
+    }
     // Create a new category
     public Category createCategory(Category category) {
         return categoryRepository.save(category);

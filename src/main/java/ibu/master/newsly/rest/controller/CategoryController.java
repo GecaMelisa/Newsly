@@ -46,6 +46,11 @@ public class CategoryController {
         }
     }
 
+    @PostMapping("/generate")
+    public ResponseEntity<String> generateCategory(@RequestBody String content) {
+        return ResponseEntity.ok(this.categoryService.generateCategory(content));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);

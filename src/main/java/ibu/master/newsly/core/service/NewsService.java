@@ -1,5 +1,6 @@
 package ibu.master.newsly.core.service;
 
+import ibu.master.newsly.core.api.generateCategory.CategoryGenerator;
 import ibu.master.newsly.core.model.Category;
 import ibu.master.newsly.core.model.News;
 import ibu.master.newsly.core.model.User;
@@ -9,6 +10,13 @@ import ibu.master.newsly.core.repository.UserRepository;
 import ibu.master.newsly.rest.dto.NewsDTO;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,11 +26,16 @@ public class NewsService {
     private final NewsRepository newsRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final CategoryGenerator categoryGenerator;
 
-    public NewsService(NewsRepository newsRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
+    DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy."); // Define custom date format
+
+
+    public NewsService(NewsRepository newsRepository, CategoryRepository categoryRepository, UserRepository userRepository, CategoryGenerator categoryGenerator) {
         this.newsRepository = newsRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.categoryGenerator = categoryGenerator;
     }
 
     public List<News> getAllNews() {
@@ -39,25 +52,27 @@ public class NewsService {
         news.setTitle(newsDto.getTitle());
         news.setContent(newsDto.getContent());
 
-        // Validate and assign Category (optional)
-        if (newsDto.getCategoryId() != null) {
-            Category category = categoryRepository.findById(newsDto.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + newsDto.getCategoryId()));
+        LocalDate localDate = LocalDate.parse(newsDto.getDate(), customFormatter);
+        Date date = Date.from(localDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        news.setDate(date);
+
+
+        Category category = categoryRepository.findCategoryByName(newsDto.getCategoryName());
+        if(category != null) {
             news.setCategory(category);
-        }
-
-        // Validate and assign the author (User)
-        if (newsDto.getUserId() != null) {
-            User user = userRepository.findById(newsDto.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + newsDto.getUserId()));
-            news.setUser(user); // Set the author of the news
         } else {
-            throw new RuntimeException("User ID is required to create news");
+            Category newCategory = new Category();
+            newCategory.setName(newsDto.getCategoryName());
         }
 
-        // Save News and return
+
+        Optional<User> user = userRepository.findById(newsDto.getUserId());
+        user.ifPresent(news::setUser);
+
         return newsRepository.save(news);
     }
+
+
 
 
     public News updateNews(Long id, NewsDTO newsDto) {
@@ -67,8 +82,14 @@ public class NewsService {
         existingNews.setTitle(newsDto.getTitle());
         existingNews.setContent(newsDto.getContent());
 
-        Optional<Category> categoryOptional = categoryRepository.findById(newsDto.getCategoryId());
-        categoryOptional.ifPresent(existingNews::setCategory);
+        Category category = categoryRepository.findCategoryByName(newsDto.getCategoryName());
+        if(category != null) {
+            existingNews.setCategory(category);
+        } else {
+            Category newCategory = new Category();
+            newCategory.setName(newsDto.getCategoryName());
+        }
+
 
         Optional<User> userOptional = userRepository.findById(newsDto.getUserId());
         userOptional.ifPresent(existingNews::setUser);
@@ -88,4 +109,5 @@ public class NewsService {
     public List<News> getNewsByUserId(Long userId) {
         return newsRepository.findByUserId(userId);
     }
+
 }
