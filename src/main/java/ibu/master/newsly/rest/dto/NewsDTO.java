@@ -12,17 +12,21 @@ public class NewsDTO {
     private String date;
     private String category_name;
     private Long user_Id;
+    private String email;
+    private String userName; // Added userName field
 
     // Default constructor
     public NewsDTO() {}
 
     // Parameterized constructor for output
-    public NewsDTO(Long id, String title, String content, String date, String category_name, Long user_Id) {
+    public NewsDTO(Long id, String title, String content, String date, String category_name, Long user_Id, String email, String userName) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.category_name = category_name;
         this.user_Id = user_Id;
+        this.email = email;
+        this.userName = userName; // Properly set the userName
     }
 
     // Static method to convert News entity to NewsDTO (Output)
@@ -33,7 +37,9 @@ public class NewsDTO {
                 news.getContent(),
                 news.getDate() != null ? news.getDate().toString() : null,
                 news.getCategory() != null ? news.getCategory().getName() : null,
-                news.getUser() != null ? news.getUser().getId() : null
+                news.getUser() != null ? news.getUser().getId() : null,
+                news.getUser() != null ? news.getUser().getEmail() : null,
+                news.getUser() != null ? news.getUser().getName() : null // Include user's name
         );
     }
 
@@ -77,5 +83,21 @@ public class NewsDTO {
 
     public void setUserId(Long userId) {
         this.user_Id = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
