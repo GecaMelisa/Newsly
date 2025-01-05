@@ -6,4 +6,4 @@ FROM openjdk:21-jdk-slim
 COPY --from=build /target/newsly-0.0.1-SNAPSHOT.jar newsly.jar
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","ai-todo.jar"]
+ENTRYPOINT ["java","-jar","newsly.jar"]
