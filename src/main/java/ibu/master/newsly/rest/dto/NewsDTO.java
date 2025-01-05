@@ -7,6 +7,7 @@ import ibu.master.newsly.core.model.User;
 import java.time.LocalDateTime;
 
 public class NewsDTO {
+    private Long id;
     private String title;
     private String content;
     private String date;
@@ -20,6 +21,7 @@ public class NewsDTO {
 
     // Parameterized constructor for output
     public NewsDTO(Long id, String title, String content, String date, String category_name, Long user_Id, String email, String userName) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.date = date;
@@ -44,6 +46,14 @@ public class NewsDTO {
     }
 
     // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
