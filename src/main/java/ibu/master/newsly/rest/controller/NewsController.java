@@ -64,9 +64,6 @@ public class NewsController {
         }
     }
 
-
-
-
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NewsDTO> updateNews(@PathVariable Long id, @RequestBody NewsDTO newsDTO) {
         News updatedNews = newsService.updateNews(id, newsDTO); // Use NewsDTO directly

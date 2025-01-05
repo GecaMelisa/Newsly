@@ -12,7 +12,7 @@ public class OpenAICategoryGeneration implements CategoryGenerator {
 
     @Override
     public String generateCategory(String category) {
-        String prompt = "Suggest a category for the following News content: " + category;
+        String prompt = "Suggest a category for the following News content but please use only one word: " + category;
         CompletionRequest completionRequest = CompletionRequest.builder()
                 .prompt(prompt)
                 .model("gpt-3.5-turbo-instruct")

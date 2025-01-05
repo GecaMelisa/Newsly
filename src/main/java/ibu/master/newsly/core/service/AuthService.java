@@ -38,17 +38,15 @@ public class AuthService {
     }
 
     public String loginUser(UserLoginDTO loginDTO) {
-        logger.info("Attempting login for user: {}", loginDTO.getEmail());
         User user = userRepository.findByEmail(loginDTO.getEmail());
         if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            logger.error("Invalid login attempt for email: {}", loginDTO.getEmail());
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        String token = jwtTokenProvider.generateToken(user.getEmail());
-        logger.info("Generated token for user: {}", loginDTO.getEmail());
-        return token;
+        // Return the token without the "Bearer " prefix
+        return jwtTokenProvider.generateToken(user.getId(), user.getEmail());
     }
+
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);

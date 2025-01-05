@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -25,33 +27,58 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    // Generate a JWT token
-    public String generateToken(String email) {
+    /**
+     * Generate a JWT token without the "Bearer " prefix
+     */
+    public String generateToken(Long userId, String email) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("user_id", userId);
+        claims.put("sub", email);
+
         return Jwts.builder()
-                .setSubject(email)
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Extract email from JWT token
-    public String getEmailFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject();
+    /**
+     * Extract user ID from the JWT token
+     */
+    public Long getUserIdFromToken(String token) {
+        Claims claims = extractClaims(token);
+        return claims.get("user_id", Long.class);
     }
 
-    // Validate the JWT token
+    /**
+     * Extract email from the JWT token
+     */
+    public String getEmailFromToken(String token) {
+        Claims claims = extractClaims(token);
+        return claims.get("sub", String.class);
+    }
+
+    /**
+     * Validate the JWT token
+     */
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            extractClaims(token);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Extract all claims from the token
+     */
+    private Claims extractClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
