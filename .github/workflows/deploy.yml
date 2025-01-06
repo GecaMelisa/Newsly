@@ -2,7 +2,7 @@ name: Deploy to Render
 
 on:
   release:
-    types: [published] # Trigger the workflow when a release is published
+    types: [published]
   push:
     tags:
       - 'v*' # Trigger the workflow for tags starting with 'v'
@@ -20,12 +20,14 @@ jobs:
       - name: Install Render CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/render-oss/cli/refs/heads/main/bin/install.sh | sh
-      # Step 3: Set Render Workspace
+
+      # Step 3: Set Render Workspace (using Workspace ID)
       - name: Set Render Workspace
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
           render workspace set newsly-workspace -o json
+
       # Step 4: Get Commit SHA
       - name: Get Commit SHA
         id: git-info
@@ -35,7 +37,7 @@ jobs:
       - name: Verify Render CLI Installation
         run: render --version
 
-      # Step 6: Deploy the application to Render
+      # Step 6: Deploy to Render using Service ID
       - name: Deploy to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
