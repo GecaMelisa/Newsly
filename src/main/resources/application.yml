@@ -13,8 +13,8 @@ spring:
     property-naming-strategy: SNAKE_CASE
 
 jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${EXPARATION} # 1 day in milliseconds
+  secret: your_very_secure_and_long_secret_key_here
+  expiration: 86400000 # 1 day in milliseconds
 
 openai:
   secret: ${OPENAI_KEY}
