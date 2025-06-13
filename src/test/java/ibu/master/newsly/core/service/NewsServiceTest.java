@@ -89,7 +89,6 @@ public class NewsServiceTest {
 
     @Test
     void testCreateNews() {
-        // Given
         NewsDTO newsDTO = new NewsDTO();
         newsDTO.setTitle("Test Title");
         newsDTO.setContent("Test Content");
@@ -99,7 +98,6 @@ public class NewsServiceTest {
 
         User user = new User();
         user.setId(1L);
-
         Category category = new Category();
         category.setName("Technology");
 

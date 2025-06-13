@@ -14,7 +14,7 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  expiration: 86400000 # 1 day in milliseconds
+  expiration: ${EXPARATION} # 1 day in milliseconds
 
 openai:
   secret: ${OPENAI_KEY}
