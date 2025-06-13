@@ -30,6 +30,7 @@ public class NewsService {
 
     DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy."); // Define custom date format
 
+    //Constructor Injection
 
     public NewsService(NewsRepository newsRepository, CategoryRepository categoryRepository, UserRepository userRepository, CategoryGenerator categoryGenerator) {
         this.newsRepository = newsRepository;
