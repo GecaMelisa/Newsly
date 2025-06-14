@@ -9,12 +9,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   jackson:
     property-naming-strategy: SNAKE_CASE
 
 jwt:
-  secret: your_very_secure_and_long_secret_key_here
-  expiration: 86400000 # 1 day in milliseconds
+  secret: ${JWT_SECRET}   # Use env variable, not hardcoded
+  expiration: ${JWT_EXPIRATION:86400000}  # Optional fallback
 
 openai:
   secret: ${OPENAI_KEY}
