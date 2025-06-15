@@ -27,8 +27,8 @@ public class CustomUserDetailsServiceTest {
     @Test
     void testLoadUserByUsername_UserFound() {
         // Arrange
-        String email = "johndoe@example.com";
-        User mockUser = new User("John Doe", email, "encodedPassword123");
+        String email = "melisa@example.com";
+        User mockUser = new User("Melisa Geca", email, "encodedPassword123");
 
         when(userRepository.findByEmail(email)).thenReturn(mockUser);
 
@@ -56,8 +56,8 @@ public class CustomUserDetailsServiceTest {
     @Test
     void testLoadUserByUsername_CaseInsensitive() {
         // Arrange
-        String email = "JOHNDOE@EXAMPLE.COM";
-        User mockUser = new User("John Doe", email.toLowerCase(), "encodedPassword123");
+        String email = "MELISA@EXAMPLE.COM";
+        User mockUser = new User("Melisa Geca", email.toLowerCase(), "encodedPassword123");
 
         when(userRepository.findByEmail(email.toLowerCase())).thenReturn(mockUser);
 

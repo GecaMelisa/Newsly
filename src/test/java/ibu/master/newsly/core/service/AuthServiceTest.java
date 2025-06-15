@@ -38,8 +38,8 @@ public class AuthServiceTest {
     void testRegisterUser_Success() {
         // Arrange
         UserRegistrationDTO userDTO = new UserRegistrationDTO();
-        userDTO.setName("John Doe");
-        userDTO.setEmail("john@example.com");
+        userDTO.setName("Melisa Geca");
+        userDTO.setEmail("melisa@ibu.edu.ba");
         userDTO.setPassword("password123");
 
         when(userRepository.findByEmail(userDTO.getEmail())).thenReturn(null);
@@ -51,8 +51,8 @@ public class AuthServiceTest {
 
         // Assert
         assertNotNull(registeredUser);
-        assertEquals("John Doe", registeredUser.getName());
-        assertEquals("john@example.com", registeredUser.getEmail());
+        assertEquals("Melisa Geca", registeredUser.getName());
+        assertEquals("melisa@ibu.edu.ba", registeredUser.getEmail());
         verify(userRepository).save(any(User.class));
     }
 
