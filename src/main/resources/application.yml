@@ -15,7 +15,7 @@ spring:
     property-naming-strategy: SNAKE_CASE
 
 jwt:
-  secret: ${JWT_SECRET}   # Use env variable, not hardcoded
+  secret: "your_very_secure_and_long_secret_key_here"
   expiration: ${JWT_EXPIRATION:86400000}  # Optional fallback
 
 openai:
